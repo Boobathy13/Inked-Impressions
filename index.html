@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Webpage Title -->
+    <title>Sparta BackEnd Final Project</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+
+    <script type="text/javascript">
+
+        function order() {
+            let name = $("#order-name").val();
+            let count = $("#order-count").val();
+            let address = $("#order-address").val();
+            let phone = $("#order-phone").val();
+
+            if (name == "") {
+                alert("Please fill out Name")
+                $("#order-name").focus()
+                return
+            } else if (count == "") {
+                alert("Please fill out Bookname")
+                $("#order-count").focus()
+                return
+
+            } else if (address == "" || address == "-- Please select Stars --") {
+                alert("Please fill out Stars")
+                $("#order-address").focus()
+                return
+
+            } else if (phone == "") {
+                alert("Please fill out Comments")
+                $("#order-phone").focus()
+                return
+            } else {
+                $.ajax({
+                    url: "http://127.0.0.1:5000/order",
+                    type: 'POST',
+                    data: {
+                        name_give: name,
+                        count_give: count,
+                        address_give: address,
+                        phone_give: phone
+                    },
+                    success: function (result) {
+                        //console.log("Get Ready")
+                        alert('FeedBack Succesfully Sent!')
+                        location.reload();
+                    }
+                });
+                return
+            }
+        }
+
+        $(document).ready(function () {
+            $("#orders-box").html("");
+            showOrders();
+        });
+
+        function showOrders() {
+            $.ajax({
+                url: "http://127.0.0.1:5000/order",
+                type: 'GET',
+                data: {},
+                success: function (result) {
+                    // console.log(result['orders'][0])
+                    result['orders'].forEach(element => {
+                        makeOrderRow(element['name'], element['count'], element['address'], element['phone']);
+                    });
+                }
+            });
+        }
+
+        function makeOrderRow(name, count, address, phone) {
+            let tempHtml = `<tr>\
+                                <td>${name}</td>
+                                <td>${count}</td>
+                                <td>${address}</td>
+                                <td>${phone}</td>
+                              </tr>`;
+
+            $("#orders-box").append(tempHtml);
+        }
+
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: "Stylish", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 18px;
+        }
+
+        .mytitle {
+            width: 100%;
+            height: 250px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://movie-phinf.pstatic.net/20210715_95/1626338192428gTnJl_JPEG/movie_image.jpg');
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .mytitle>button {
+            width: 300px;
+            height: 50px;
+
+            background-color: transparent;
+            color: white;
+
+            border-radius: 50px;
+            border: 1px solid white;
+
+            margin-top: 10px;
+        }
+
+        .mytitle>button:hover {
+            border: 2px solid rgb(228, 20, 20);
+        }
+
+        .container1 {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            scroll-behavior: smooth;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+
+            .subtitle {
+                font-size: 1.5rem;
+            }
+
+            nav ul {
+                list-style: square;
+                margin-top: 30px;
+                padding: 0;
+            }
+
+            nav ul li {
+                display: inline;
+                margin-left: 60px;
+                margin-right: 60px;
+            }
+
+            nav ul li a {
+                width: 500px;
+                height: 50px;
+                color: whitesmoke;
+                text-decoration: none;
+
+
+
+            }
+
+
+
+            .section {
+                padding: 40px 0;
+            }
+
+        }
+
+        .mycomment {
+            color: gray;
+        }
+
+        .about {
+            text-align: center;
+        }
+
+
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .wrap {
+            width: 500px;
+            margin: auto;
+        }
+
+        .img {
+            background-image: url("https://st1.latestly.com/wp-content/uploads/2022/04/Quotes-4.jpg");
+            background-size: cover;
+            background-position: center;
+            width: 500px;
+            height: 300px;
+        }
+
+        .info {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order {
+            text-align: center;
+        }
+
+        .orders {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mytitle">
+        <h1>Inked Impressions</h1>
+        <button>Reviews from Avid Readers</button>
+
+        <div class="container1">
+            <header>
+                <nav>
+                    <ul>
+                        <li> <a href="#Book Collections">Book Collections</a></li>
+                        <li><a href="#Feedback">Feedback</a></li>
+                        <li><a href="#About">About</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+    </div>
+
+    <section id="Book Collections" class="section">
+        <div style="color: midnightblue; text-align: center;padding-top: 10px; background-color: whitesmoke;">
+            <h3>Read What you Love,Until you Love to Read ⏰.</h3>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4"
+            style="width: 95%;margin: auto;padding: auto;background-color: brown;">
+            <div class="col" style="border: 2px solid black; padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*tQszPBlBdi522xW1DnhwgQ.jpeg"
+                        width="100" height="200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Atomic Habits</h5><br>
+                        <h5 style="color: purple;">Author : James Clear</h5>
+                        <p class="card-text">A supremely practical and useful book. James Clear distills the most
+                            fundamental information about habit formation, so you can accomplish more by focusing on
+                            less.This breakthrough book from James Clear is the most comprehensive guide on how to
+                            change your habits and get 1% better every day.
+                        </p>
+                        <p>⭐⭐⭐⭐⭐</p>
+                        <p class="mycomment">Self Improvement and Progress.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://qph.cf2.quoracdn.net/main-qimg-63acbf724b93cb66445032b0b160eed8-lq" width="100"
+                        height="200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">5 AM Club</h5><br>
+                        <h5 style="color: purple;">Author : Robin Sharma</h5>
+                        <p class="card-text">The 5AM Club method is known as “The Mother of All Routines.” It involves
+                            building a new habit of investing the first hour of your day in high-value activities that
+                            maximize personal growth and personal development. It establishes a consistent practice of
+                            working on the most important things first thing in the morning.</p>
+                        <p>⭐⭐⭐⭐</p>
+                        <p class="mycomment">Routine.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://5.imimg.com/data5/ANDROID/Default/2023/1/MQ/MQ/FW/161183780/product-jpeg-500x500.jpg"
+                        width="100" height="200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">The Power of your subconscious mind </h5><br>
+                        <h5 style="color: purple;">Author : Joseph Murphy</h5>
+                        <p class="card-text">The subconscious mind is intelligent and has infinite potential that can
+                            magnetize people to achieve more. The chapter states that we do not need to acquire the
+                            subconscious because we already have it. We only need to reach out for it to release the
+                            hidden power of human Brain.</p>
+                        <p>⭐⭐⭐⭐⭐</p>
+                        <p class="mycomment">Interesting Facts about Human Mind.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://pyxis.nymag.com/v1/imgs/96a/085/3c4bdb86aa03afa2b7fdfd13096650e94d-08-mein-kampf.rsquare.w330.jpg"
+                        width="90" height="200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Mein Kampf</h5><br>
+                        <h5 style="color: purple;">Author : Adolf Hitler</h5>
+                        <p class="card-text">Mein Kampf is a 1925 autobiographical manifesto by Nazi Party leader Adolf
+                            Hitler. The work describes the process by which Hitler became antisemitic and outlines his
+                            political ideology and future plans for Germany. Volume 1 of Mein Kampf was published in
+                            1925 and Volume 2 in 1926.</p>
+                        <br>
+                        <p>⭐⭐⭐⭐</p>
+                        <p class="mycomment">Solitude and Politics.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr>
+        <div class="row row-cols-1 row-cols-md-4 g-4"
+            style="width: 95%;margin: auto;padding: auto;background-color: brown;">
+            <div class="col" style="border: 2px solid black; padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/Motobook7.jpg/220px-Motobook7.jpg"
+                        width="50" height="250" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">The Motorcycle Diaries</h5><br>
+                        <h5 style="color: purple;">Author : Che Guevara</h5>
+                        <p class="card-text">The Motorcycle Diaries, a epic journal, written by Ernesto Che Guevara, is
+                            a diary of the author from his journey on an old Norton motorcycle through South America.
+                            The book starts in 1952 Buenos Aires, Argentina where Che leaves for his journey to explore
+                            more of his home continent.</p>
+                        <p>⭐⭐⭐⭐</p>
+                        <p class="mycomment">An Epic Journal.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://cdn.road.cc/sites/default/files/styles/main_width/public/images/News/It%27s%20Not%20About%20The%20Bike.jpg"
+                        width="40" height="280" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">It's Not About the Bike</h5><br>
+                        <h5 style="color: purple;">Author : Lance Armstrong</h5>
+                        <p class="card-text">This book is largely the story of how his life changed from the moment of
+                            his diagnosis onwards. He had been a world class cyclist prior to cancer,
+                            but his experience with cancer gave him profound insight not only into his life as a cyclist
+                            and competitor, but into life itself.</p>
+                        <p>⭐⭐⭐⭐⭐</p>
+                        <p class="mycomment">Life and Confidence.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://i0.wp.com/bookerification.com/wp-content/uploads/2021/08/A-GOOD-GIRLS-GUIDE-TO-MURDER.png?w=300&ssl=1"
+                        width="100" height="240" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">A Good Girl's Guide to Murder </h5><br>
+                        <h5 style="color: purple;">Author : Holly Jackson</h5>
+                        <p class="card-text">Five years ago, a tragic murder-suicide rocked the small town of Little
+                            Kilton, when a schoolgirl Andie Bell was brutally murdered and her boyfriend, Sal Singh, was
+                            accused before seemingly taking his own life. But 17-year-old Pippa, is convinced that the
+                            real killer is still out there.</p>
+                        <p>⭐⭐⭐⭐⭐</p>
+                        <p class="mycomment">Crime thriller story.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="border: 2px solid black;padding: auto;background-color: bisque;">
+                <div class="card">
+                    <img src="https://www.njkinnysblog.com/wp-content/uploads/2015/03/half-girlfriend-chetan-bhagat-review-njkinnysblog-591x445.png"
+                        width="100" height="240" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Half Girlfriend</h5><br>
+                        <h5 style="color: purple;">Author : Chetan Bhagat</h5>
+                        <p class="card-text">Half Girlfriend is a story of Bihari boy Madhav, a Hindi speaking Bihari
+                            who falls in love with Riya, an influential Delhi girl on the campus of prestigious St.
+                            Stephen's College. Madhav belongs to middle class family, while Riya is from higher class
+                            and both have different lifestyles.</p>
+                        <br>
+                        <p>⭐⭐⭐⭐</p>
+                        <p class="mycomment">Adult Romance novel.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    </div>
+    <hr>
+    <div class="wrap" style="background-color:burlywood;border-radius: 25px;">
+        <section id="Feedback" class="section">
+            <div class="img"></div>
+
+            <div class="info">
+                <h1>Sparta Book Hub</h1>
+                <p>New Books New Beginnings 👍👍!!!</p>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Your name</span>
+                    </div>
+                    <input type="text" class="form-control" id="order-name">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Book Name</span>
+                    </div>
+                    <input type="text" class="form-control" id="order-count">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="order-address">Stars</label>
+                    </div>
+                    <select class="custom-select" id="order-address">
+                        <option selected value=""> -- Please select Stars --</option>
+                        <option value="1">⭐</option>
+                        <option value="2">⭐⭐</option>
+                        <option value="3">⭐⭐⭐</option>
+                        <option value="4">⭐⭐⭐⭐</option>
+                        <option value="5">⭐⭐⭐⭐⭐</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Comments</span>
+                    </div>
+                    <input type="text" class="form-control" id="order-phone">
+                </div>
+                <div class="order">
+                    <button onclick="order()" type="button" class="btn btn-primary">Submit</button>
+                </div>
+        </section>
+        <div class="orders">
+            <table class="table">
+                <h3>Latest Comments!</h3>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Book Name</th>
+                        <th scope="col">Stars</th>
+                        <th scope="col">Comments</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-box">
+                    <tr>
+                        <td>Victoria</td>
+                        <td>3</td>
+                        <td>Seoul, Korea</td>
+                        <td>010-1234-5678</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="about">
+        <section id="About" class="section">
+            <img src="https://e1.pxfuel.com/desktop-wallpaper/463/689/desktop-wallpaper-3840x2160-books-library-shelves-lighting-u-16-9-backgrounds-books.jpg"
+                width="800" height="450" alt="..." style=" border-radius: 50px;padding-top: 10px;">"
+            <p>This is the Web Page for Book Readers to Explore the new books and Give the Feedback about the Books.</p>
+            <h2>Contact Me</h2>
+            <p>Email: sparta123@example.com</p>
+            <p>Phone: +1234567890</p>
+        </section>
+    </div>
+
+
+</body>
+
+</html>
