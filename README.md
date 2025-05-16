@@ -9,7 +9,7 @@
 
 ## 🚀 Live Demo
 
-🌐 [https://boobathy13.github.io/Sparta-Back-End-Project/](https://boobathy13.github.io/Sparta-Back-End-Project/)
+🌐 [https://boobathy13.github.io/Sparta-Back-End-Project/](https://boobathy13.github.io/Inked-Impressions/)
 
 ---
 
